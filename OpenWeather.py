@@ -1,11 +1,5 @@
+# Justin DeGuzman
+# justicd1@uci.edu
+# 72329664
+
 # openweather.py
-
-# Starter code for assignment 4 in ICS 32
-# Programming with Software Libraries in Python
-
-# Replace the following placeholders with your information.
-
-# NAME
-# EMAIL
-# STUDENT ID
-
