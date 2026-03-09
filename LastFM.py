@@ -4,9 +4,12 @@
 
 # lastfm.py
 
+# test key: 7fd54493df314cfe515993c2d3e09dde
+
 class LastFM:
     def __init__(self):
-        pass
+        self.api_key = None
+        self.artist = None
 
     def _download_url(self, url_to_download: str) -> dict:
         pass
