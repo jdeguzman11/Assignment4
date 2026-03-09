@@ -42,7 +42,7 @@ class LastFM:
     def load_data(self) -> None:
         try:
             url_to_download = (
-                f"https://ws.audioscrobbler.com/2.0/?method="
+                f"http://ws.audioscrobbler.com/2.0/?method="
                 f"chart.gettopartists&api_key={self.api_key}&format=json"
             )
 
