@@ -15,6 +15,7 @@ class LastFM:
         pass
 
     def set_apikey(self, apikey: str) -> None:
+        self.api_key = apikey
         pass
 
     def load_data(self) -> None:
