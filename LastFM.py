@@ -17,7 +17,23 @@ class LastFM:
         self.artist = None
 
     def _download_url(self, url_to_download: str) -> dict:
-        pass
+        response = None
+        r_obj = None
+
+        try:
+            response = urllib.request.urlopen(url_to_download)
+            json_results = response.read()
+            r_obj = json.loads(json_results)
+
+        except urllib.error.HTTPError as e:
+            print('Failed to download contents of URL')
+            print('Status code: {}'.format(e.code))
+
+        finally:
+            if response is not None:
+                response.close()
+
+        return r_obj
 
     def set_apikey(self, apikey: str) -> None:
         self.api_key = apikey

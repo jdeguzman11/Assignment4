@@ -4,6 +4,8 @@
 
 # openweather.py
 
+# test key: ad82f6236708c572a3190d5302dd9ac4
+
 import urllib
 import json
 from urllib import request, error
@@ -79,6 +81,8 @@ class OpenWeather:
         except (KeyError, TypeError, json.JSONDecodeError) as e:
             raise Exception("Invalid data format from OpenWeather API.") from e
 
+        pass
+
     def transclude(self, message: str) -> str:
         if "@weather" not in message:
             return message
@@ -87,10 +91,3 @@ class OpenWeather:
             return message
 
         return message.replace("@weather", self.description)
-
-
-open_weather = OpenWeather("92697", "US")
-open_weather.set_apikey("ad82f6236708c572a3190d5302dd9ac4")
-open_weather.load_data()
-msg = "Today's weather is @weather."
-print(open_weather.transclude(msg))
