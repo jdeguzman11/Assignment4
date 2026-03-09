@@ -14,6 +14,7 @@ class OpenWeather:
         self.zipcode = zipcode
         self.ccode = ccode
 
+        # initializing components from OpenWeather API
         self.temperature = None
         self.high_temperature = None
         self.low_temperature = None
@@ -24,28 +25,56 @@ class OpenWeather:
         self.city = None
         self.sunset = None
 
+    # helper function obtained from Assignment4 Part1
+    def _download_url(self, url_to_download: str) -> dict:
+        response = None
+        r_obj = None
+
+        try:
+            response = urllib.request.urlopen(url_to_download)
+            json_results = response.read()
+            r_obj = json.loads(json_results)
+
+        except urllib.error.HTTPError as e:
+            print('Failed to download contents of URL')
+            print('Status code: {}'.format(e.code))
+
+        finally:
+            if response is not None:
+                response.close()
+
+        return r_obj
+
+    # defines API key for the class
     def set_apikey(self, apikey: str) -> None:
         self.api_key = apikey
         pass
 
+    # obtains components from OpenWeather while checking for various errors
     def load_data(self) -> None:
-        pass
+        try:
+            url_to_download = (
+                f"http://api.openweathermap.org/data/2.5/weather"
+                f"?zip={self.zipcode},{self.ccode}&appid={self.api_key}"
+            )
 
-    def _download_url(self, url_to_download: str) -> dict:
-    response = None
-    r_obj = None
+            weather_obj = self._download_url(url_to_download)
 
-    try:
-        response = urllib.request.urlopen(url_to_download)
-        json_results = response.read()
-        r_obj = json.loads(json_results)
+            if weather_obj is None:
+                raise Exception("OpenWeather API returned an HTTP error.")
 
-    except urllib.error.HTTPError as e:
-        print('Failed to download contents of URL')
-        print('Status code: {}'.format(e.code))
+            self.temperature = weather_obj["main"]["temp"]
+            self.high_temperature = weather_obj["main"]["temp_max"]
+            self.low_temperature = weather_obj["main"]["temp_min"]
+            self.longitude = weather_obj["coord"]["lon"]
+            self.latitude = weather_obj["coord"]["lat"]
+            self.description = weather_obj["weather"][0]["description"]
+            self.humidity = weather_obj["main"]["humidity"]
+            self.city = weather_obj["name"]
+            self.sunset = weather_obj["sys"]["sunset"]
 
-    finally:
-        if response is not None:
-            response.close()
+        except urllib.error.URLError as e:
+            raise Exception("Lost local connection from Internet.") from e
 
-    return r_obj
+        except (KeyError, TypeError, json.JSONDecodeError) as e:
+            raise Exception("Invalid data format from OpenWeather API.") from e
