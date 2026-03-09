@@ -19,8 +19,9 @@ class OpenWeather:
         self.city = None
         self.sunset = None
 
-    def set_apikey():
+    def set_apikey(self, apikey: str) -> None:
+        self.api_key = apikey
         pass
 
-    def load_data():
+    def load_data(self) -> None:
         pass
