@@ -49,7 +49,7 @@ class UI:
                 return val
             print("Please enter a value (cannot be blank).")
 
-    def _transluce_message(self, message: str) -> str:
+    def _transclude_message(self, message: str) -> str:
         result = message
 
         try:
@@ -421,7 +421,7 @@ class UI:
         cmd = parts[0].upper()
 
         path_commands = {"L", "C", "D", "R", "O"}
-        no_path_commands = {"E", "P", "PUB"}
+        no_path_commands = {"E", "P", "PUB", "API"}
 
         if cmd in path_commands:
             if len(parts) < 2:
@@ -468,6 +468,10 @@ class UI:
                 self._publish_post(idx)
                 return True
 
+            if cmd == "API":
+                self._configure_api_settings()
+                return True
+
             options = parts[1:]
 
             if cmd == "P":
@@ -491,6 +495,9 @@ class UI:
             print(f"Loaded: {self.current_path}")
         else:
             print("Loaded: (none)")
+        print(
+            f"Weather location: {self.weather_zipcode}, {self.weather_ccode}"
+        )
         print("Type a command or choose an option below.")
         print()
 
@@ -530,7 +537,7 @@ class UI:
                 "  -delpost <#>")
             print(
                 " Keywords for posts: @weather: replaces with today's weather,"
-                "@lastfm: replaces with today's top artist"
+                " @lastfm: replaces with today's top artist"
                 )
             print("  PUB <#>")
             print()
@@ -546,8 +553,9 @@ class UI:
             print("  7. List Directory             (L <dir> ...)")
             print("  8. Delete a DSU file          (D <path_to_dsu>)")
             print("  9. Read a DSU file            (R <path_to_dsu>)")
-            print("  10. Open Another Profile      (O <path_to_dsu>)")
-            print("  11. Quit                      (Q)")
+            print(" 10. Open Another Profile      (O <path_to_dsu>)")
+            print(" 11. Configure API Settings    (API)")
+            print(" 12. Quit                      (Q)")
             print()
 
     def _user_choice_to_command(self, choice: str) -> str:
@@ -670,6 +678,9 @@ class UI:
             return f"O {path}"
 
         if c == "11":
+            return "API"
+
+        if c == "12":
             return "Q"
 
         return choice
@@ -772,7 +783,7 @@ class UI:
                         print("ERROR")
                         return
 
-                    transcluded_val = self._transluce_message(val)
+                    transcluded_val = self._transclude_message(val)
                     plan.append(("addpost", transcluded_val))
                     shadow_posts.append(Post(transcluded_val))
 
@@ -820,3 +831,57 @@ class UI:
 
             print("ERROR")
             return
+
+    def _configure_api_settings(self) -> None:
+        print()
+        print("     API Settings")
+        print(f"Current weather zipcode: {self.weather_zipcode}")
+        print(f"Current weather country code: {self.weather_ccode}")
+
+        masked_weather = (
+            "*" * len(self.weather_apikey)
+            if self.weather_apikey
+            else "(none)"
+        )
+        print(f"Current OpenWeather API Key: {masked_weather}")
+
+        masked_lastfm = (
+            "*" * len(self.lastfm_apikey)
+            if self.lastfm_apikey
+            else "(none)"
+        )
+        print(f"Current LastFM API Key: {masked_lastfm}")
+        print()
+
+        try:
+            zipcode = input(
+                f"Weather zipcode: "
+            ).strip()
+            ccode = input(
+                f"Weather country code: "
+            ).strip()
+            weather_key = input(
+                "OpenWeather API Key "
+                "(leave blank to keep current): "
+            ).strip()
+            lastfm_key = input(
+                "LastFM API Key "
+                "(leave blank to keep current): "
+            ).strip()
+        except EOFError:
+            print("ERROR")
+            return
+
+        if zipcode != "":
+            self.weather_zipcode = zipcode
+
+        if ccode != "":
+            self.weather_ccode = ccode
+
+        if weather_key != "":
+            self.weather_apikey = weather_key
+
+        if lastfm_key != "":
+            self.lastfm_apikey = lastfm_key
+
+        print("API Settings Updated")
