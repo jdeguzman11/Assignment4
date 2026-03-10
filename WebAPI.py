@@ -12,7 +12,7 @@ import json
 
 class WebAPI(ABC):
     """Parent class OpenWeather and LastFM inherit from."""
-    
+
     def _download_url(self, url: str) -> dict:
         response = None
         r_obj = None
