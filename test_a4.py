@@ -42,6 +42,26 @@ def test_transclude_weather_no_keyword() -> None:
     assert result == "Hello!"
 
 
+def test_transclude_weather_description_none() -> None:
+    """Leave message unchanged if description not loaded."""
+    weather = OpenWeather()
+    weather.description = None
+
+    result = weather.transclude("Weather today is @weather")
+
+    assert result == "Weather today is @weather"
+
+
+def test_transclude_weather_multiple_keywords() -> None:
+    """Should replace all @weather occurrences."""
+    weather = OpenWeather()
+    weather.description = "sunny"
+
+    result = weather.transclude("@weather and still @weather")
+
+    assert result == "sunny and still sunny"
+
+
 """LastFM class tests."""
 
 
