@@ -4,6 +4,8 @@
 
 from OpenWeather import OpenWeather
 from LastFM import LastFM
+from WebAPI import WebAPI
+import pytest
 
 """OpenWeather class tests."""
 
@@ -65,4 +67,12 @@ def test_transclude_lastfm_no_keyword() -> None:
     result = music.transclude("Hello!")
 
     assert result == "Hello!"
-    
+
+
+"""WebAPI base class tests."""
+
+
+def test_webapi() -> None:
+    """Shouldn't be instantiated directly."""
+    with pytest.raises(TypeError):
+        WebAPI()
