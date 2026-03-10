@@ -23,3 +23,13 @@ def test_transclude_weather_keyword() -> None:
     result = weather.transclude("Weather today is @weather")
 
     assert result == "Weather today is clear sky"
+
+
+def test_transclude_weather_no_keyword() -> None:
+    """OpenWeather should leave as is."""
+    weather = OpenWeather()
+    weather.description = "clear sky"
+
+    result = weather.transclude("Hello!")
+
+    assert result == "Hello!"
