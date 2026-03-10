@@ -13,4 +13,13 @@ def test_set_apikey_weather() -> None:
     weather.set_apikey("testkey")
 
     assert weather.api_key == "testkey"
-    
+
+
+def test_transclude_weather_keyword() -> None:
+    """OpenWeather should replace @weather."""
+    weather = OpenWeather()
+    weather.description = "clear sky"
+
+    result = weather.transclude("Weather today is @weather")
+
+    assert result == "Weather today is clear sky"
