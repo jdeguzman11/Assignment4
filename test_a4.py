@@ -5,7 +5,7 @@
 from OpenWeather import OpenWeather
 from LastFM import LastFM
 from WebAPI import WebAPI
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 from ui import UI
 import pytest
 
@@ -91,3 +91,16 @@ def test_transclude_message_no_keywords():
     result = ui_obj._transclude_message(message)
 
     assert result == "Hello!"
+
+
+def test_process_line_routes_api():
+    """Should route API command to configure API settings."""
+    ui_obj = UI()
+    ui_obj.current_profile = object()
+    ui_obj.current_path = "/tmp/test.dsu"
+    ui_obj._configure_api_settings = Mock()
+
+    result = ui_obj._process_line("API")
+
+    assert result is True
+    ui_obj._configure_api_settings.assert_called_once_with()
