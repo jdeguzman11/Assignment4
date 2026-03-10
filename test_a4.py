@@ -8,6 +8,8 @@ from WebAPI import WebAPI
 from unittest.mock import Mock
 from ui import UI
 import pytest
+import json
+import urllib.error
 
 """OpenWeather class tests."""
 
@@ -69,6 +71,26 @@ def test_transclude_lastfm_no_keyword() -> None:
     result = music.transclude("Hello!")
 
     assert result == "Hello!"
+
+
+def test_transclude_lastfm_artist_none() -> None:
+    """Leave message unchanged if artist is not loaded."""
+    music = LastFM()
+    music.artist = None
+
+    result = music.transclude("Listening to @lastfm")
+
+    assert result == "Listening to @lastfm"
+
+
+def test_transclude_lastfm_multiple_keywords() -> None:
+    """Replaces all @lastfm occurrences."""
+    music = LastFM()
+    music.artist = "Drake"
+
+    result = music.transclude("@lastfm and @lastfm again")
+
+    assert result == "Drake and Drake again"
 
 
 """WebAPI base class tests."""
