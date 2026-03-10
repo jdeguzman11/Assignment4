@@ -3,14 +3,16 @@
 # 72329664
 
 # webapi.py
+"""Abstract base class for web API clients used in the DSU application."""
 
 from abc import ABC, abstractmethod
 import urllib
 import json
-from urllib import request, error
 
 
 class WebAPI(ABC):
+    """Parent class OpenWeather and LastFM inherit from."""
+    
     def _download_url(self, url: str) -> dict:
         response = None
         r_obj = None
@@ -32,7 +34,6 @@ class WebAPI(ABC):
 
     def set_apikey(self, apikey: str) -> None:
         self.api_key = apikey
-        pass
 
     @abstractmethod
     def load_data(self) -> None:

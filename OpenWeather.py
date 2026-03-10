@@ -5,14 +5,16 @@
 # openweather.py
 
 # test key: ad82f6236708c572a3190d5302dd9ac4
+"""OpenWeather API client for retrieving weather data and
+ transcluding @weather."""
 
 import urllib
 import json
-from urllib import request, error
 from WebAPI import WebAPI
 
 
 class OpenWeather(WebAPI):
+    """Represents an OpenWeather API client."""
     # constructor with default values
     def __init__(self, zipcode: str = "92697", ccode: str = "US") -> None:
         self.zipcode = zipcode
@@ -40,7 +42,7 @@ class OpenWeather(WebAPI):
             weather_obj = self._download_url(url_to_download)
 
             if weather_obj is None:
-                raise Exception("OpenWeather API returned an HTTP error.")
+                raise RuntimeError("OpenWeather API returned an HTTP error.")
 
             self.temperature = weather_obj["main"]["temp"]
             self.high_temperature = weather_obj["main"]["temp_max"]
@@ -53,12 +55,10 @@ class OpenWeather(WebAPI):
             self.sunset = weather_obj["sys"]["sunset"]
 
         except urllib.error.URLError as e:
-            raise Exception("Lost local connection from Internet.") from e
+            raise RuntimeError("Lost local connection from Internet.") from e
 
         except (KeyError, IndexError, TypeError, json.JSONDecodeError) as e:
-            raise Exception("Invalid data format from OpenWeather API.") from e
-
-        pass
+            raise RuntimeError("Invalid data format: OpenWeather API.") from e
 
     def transclude(self, message: str) -> str:
         if "@weather" not in message:

@@ -4,6 +4,8 @@
 
 # ds_protocol.py
 
+"""Functions for handling DS server JSON responses."""
+
 import json
 from collections import namedtuple
 
@@ -11,9 +13,10 @@ DataTuple = namedtuple("DataTuple", ["type", "token"])
 
 
 def extract_json(json_msg: str) -> DataTuple:
+    """Utility functions for handling DS server JSON responses."""
     try:
         json_obj = json.loads(json_msg)
-        type = json_obj["response"]["type"]
+        response_type = json_obj["response"]["type"]
         token = json_obj["response"].get("token", "")
 
     except json.JSONDecodeError:
@@ -23,4 +26,4 @@ def extract_json(json_msg: str) -> DataTuple:
     except (KeyError, TypeError):
         return DataTuple(None, None)
 
-    return DataTuple(type, token)
+    return DataTuple(response_type, token)

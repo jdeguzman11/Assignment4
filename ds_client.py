@@ -4,6 +4,8 @@
 
 # ds_client.py
 
+"""Client functions for connecting to the DS server and sending posts."""
+
 import socket
 from typing import Optional, TextIO
 import json
@@ -19,7 +21,7 @@ def _connect(host: str, port: int) -> Optional[socket.socket]:
         sock.connect((host, port))
         return sock
 
-    except Exception:
+    except Exception:  # pylint: disable=broad-except
         return None
 
 
@@ -30,7 +32,7 @@ def _send_json(send_file: TextIO, message: dict) -> bool:
         send_file.flush()
         return True
 
-    except Exception:
+    except Exception:  # pylint: disable=broad-except
         return False
 
 
@@ -42,7 +44,7 @@ def _recv_response(recv_file: TextIO) -> ds_protocol.DataTuple:
             return ds_protocol.DataTuple(None, None)
         return ds_protocol.extract_json(line.strip())
 
-    except Exception:
+    except Exception:  # pylint: disable=broad-except
         return ds_protocol.DataTuple(None, None)
 
 
@@ -50,6 +52,9 @@ def _is_blank(s: Optional[str]) -> bool:
     return s is None or s.strip() == ""
 
 
+# pylint: disable=too-many-arguments,too-many-positional-arguments
+# pylint: disable=too-many-locals,too-many-return-statements
+# pylint: disable=too-many-branches
 def send(
     server: str,
     port: int,
@@ -134,23 +139,23 @@ def send(
 
         return True
 
-    except Exception:
+    except Exception:  # pylint: disable=broad-except
         return False
 
     finally:
         try:
             if send_file is not None:
                 send_file.close()
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             pass
 
         try:
             if recv_file is not None:
                 recv_file.close()
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             pass
 
         try:
             sock.close()
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             pass

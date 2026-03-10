@@ -3,6 +3,7 @@
 # 72329664
 
 # ui.py
+"""User interface for the DSU profile manager with API transclusion support."""
 
 from shlex import split, quote
 from pathlib import Path
@@ -17,6 +18,7 @@ from LastFM import LastFM
 
 
 class UI:
+    """Provides friendly and admin command interfaces for the DSU program."""
     def __init__(self) -> None:
         self.processor = CommandProcessor()
         self.current_path: Optional[str] = None
@@ -689,6 +691,8 @@ class UI:
     # Admin / Friendly Loop
     #
     def run_friendly(self, first_choice: str = "") -> None:
+        """Runs when user presses enter."""
+
         self.in_admin_mode = False
 
         if first_choice.strip() != "":
@@ -715,6 +719,8 @@ class UI:
                 break
 
     def run_admin(self) -> None:
+        """Runs when user enters 'admin'."""
+
         self.in_admin_mode = True
 
         while True:

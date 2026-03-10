@@ -4,18 +4,22 @@
 
 # command_processor.py
 
+"""Processes file system commands for the DSU Application."""
+
 from pathlib import Path
 import sys
 
 
-class CommandProcessor:
+class CommandProcessor:  # pylint: disable=too-few-public-methods
+    """Handles directory and file commands."""
 
-    # defining function that handles what command function to call
     def handle(
             self,
             command: str,
             path: str,
             options: list[str] | None) -> None:
+        """Defining function that handles what command function to call."""
+
         if options is None:
             options = []
 
@@ -40,7 +44,7 @@ class CommandProcessor:
 
         try:
             items = list(path_obj.iterdir())
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             print("ERROR")
             return
 
@@ -134,7 +138,7 @@ class CommandProcessor:
         try:
             full_path.touch()
             print(str(full_path.resolve()))
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             print("ERROR")
 
     # defining function for D (delete) command
@@ -153,7 +157,7 @@ class CommandProcessor:
             resolved = str(path_obj.resolve())
             path_obj.unlink()
             print(f"{resolved} DELETED")
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             print("ERROR")
 
     # defining function for R (read) command
@@ -173,7 +177,7 @@ class CommandProcessor:
             return
 
         try:
-            with open(path_obj, "r") as f:
+            with open(path_obj, "r", encoding="utf-8") as f:
                 sys.stdout.write(f.read())
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             print("ERROR")

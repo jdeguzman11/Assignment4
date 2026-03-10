@@ -5,14 +5,16 @@
 # lastfm.py
 
 # test key: 7fd54493df314cfe515993c2d3e09dde
+"""LastFM API class for loading music data and transcluding @lastfm."""
 
 import urllib
 import json
-from urllib import request, error
 from WebAPI import WebAPI
 
 
 class LastFM(WebAPI):
+    """Represents a LastFM web API client."""
+
     def __init__(self):
         self.api_key = None
         self.artist = None
@@ -27,18 +29,16 @@ class LastFM(WebAPI):
             artist_obj = self._download_url(url_to_download)
 
             if artist_obj is None:
-                raise Exception("LastFM API returned an HTTP error.")
+                raise RuntimeError("LastFM API returned an HTTP error.")
 
             top_artist = artist_obj["artists"]["artist"][0]
             self.artist = top_artist["name"]
 
         except urllib.error.URLError as e:
-            raise Exception("Lost local connection from Internet.") from e
+            raise RuntimeError("Lost local connection from Internet.") from e
 
         except (KeyError, IndexError, TypeError, json.JSONDecodeError) as e:
-            raise Exception("Invalid data format from LastFM API.") from e
-
-        pass
+            raise RuntimeError("Invalid data format from LastFM API.") from e
 
     def transclude(self, message: str) -> str:
         if "@lastfm" not in message:
