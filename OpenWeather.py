@@ -13,7 +13,8 @@ from WebAPI import WebAPI
 
 
 class OpenWeather(WebAPI):
-    def __init__(self, zipcode: str, ccode: str) -> None:
+    # constructor with default values
+    def __init__(self, zipcode: str = "92697", ccode: str = "US") -> None:
         self.zipcode = zipcode
         self.ccode = ccode
 
