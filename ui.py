@@ -528,6 +528,10 @@ class UI:
             print(
                 "  E -usr <u> -pwd <p> -bio <b> -addpost \"...\" "
                 "  -delpost <#>")
+            print(
+                " Keywords for posts: @weather: replaces with today's weather,"
+                "@lastfm: replaces with today's top artist"
+                )
             print("  PUB <#>")
             print()
 
@@ -536,6 +540,7 @@ class UI:
             print("  2. View Posts List            (P -posts)")
             print("  3. View One Post              (P -post <#>)")
             print("  4. Add a Post                 (E -addpost \"...\")")
+            print("     Supports keywords:         @weather & @lastfm")
             print("  5. Delete a Post              (E -delpost <#>)")
             print("  6. Publish a Post             (PUB <#>)")
             print("  7. List Directory             (L <dir> ...)")
@@ -766,8 +771,10 @@ class UI:
                     if val.strip() == "":
                         print("ERROR")
                         return
-                    plan.append(("addpost", val))
-                    shadow_posts.append(Post(val))
+
+                    transcluded_val = self._transluce_message(val)
+                    plan.append(("addpost", transcluded_val))
+                    shadow_posts.append(Post(transcluded_val))
 
                 elif opt == "-delpost":
                     try:
