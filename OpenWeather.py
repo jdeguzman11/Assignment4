@@ -8,7 +8,7 @@
 """OpenWeather API client for retrieving weather data and
  transcluding @weather."""
 
-import urllib
+import urllib.error
 import json
 from WebAPI import WebAPI
 

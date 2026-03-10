@@ -6,7 +6,8 @@
 """Abstract base class for web API clients used in the DSU application."""
 
 from abc import ABC, abstractmethod
-import urllib
+import urllib.request
+import urllib.error
 import json
 
 
