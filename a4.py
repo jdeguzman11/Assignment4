@@ -4,10 +4,14 @@
 
 #  a4.py
 
+"""Entry point for the Assignment 4 DSU Application."""
+
 from ui import UI
 
 
 def main() -> None:
+    """Starts the DSU Interface."""
+
     print("Welcome to Distributed Social Platform with API Transclusion")
     print("Type 'admin' to enter admin mode, or press enter to continue.")
 
