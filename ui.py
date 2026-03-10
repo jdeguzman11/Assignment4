@@ -12,6 +12,9 @@ from Profile import Profile, Post, DsuFileError, DsuProfileError
 
 import ds_client
 
+from OpenWeather import OpenWeather
+from LastFM import LastFM
+
 
 class UI:
     def __init__(self) -> None:
@@ -19,6 +22,12 @@ class UI:
         self.current_path: Optional[str] = None
         self.current_profile: Optional[Profile] = None
         self.in_admin_mode: bool = False
+
+        # a4 API defaults
+        self.weather_zipcode = "92697"
+        self.weather_ccode = "US"
+        self.weather_apikey = "ad82f6236708c572a3190d5302dd9ac4"
+        self.lastfm_apikey = "7fd54493df314cfe515993c2d3e09dde"
 
     def _ask_yes_no(self, prompt: str, default: str = "n") -> bool:
         try:
