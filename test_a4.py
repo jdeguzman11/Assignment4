@@ -62,6 +62,14 @@ def test_transclude_weather_multiple_keywords() -> None:
     assert result == "sunny and still sunny"
 
 
+def test_init_custom_values() -> None:
+    """Should store custom zipcode and ccdoe."""
+    weather = OpenWeather("11111", "CA")
+
+    assert weather.zipcode == "11111"
+    assert weather.ccode == "CA"
+
+
 """LastFM class tests."""
 
 
