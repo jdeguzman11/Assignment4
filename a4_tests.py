@@ -3,6 +3,7 @@
 # 73239664
 
 from OpenWeather import OpenWeather
+from LastFM import LastFM
 
 """OpenWeather class tests."""
 
@@ -33,3 +34,35 @@ def test_transclude_weather_no_keyword() -> None:
     result = weather.transclude("Hello!")
 
     assert result == "Hello!"
+
+
+"""LastFM class tests."""
+
+
+def test_set_apikey_lastfm() -> None:
+    """"LastFM stores API Key"""
+    music = LastFM()
+    music.set_apikey("testkey")
+
+    assert music.api_key == "testkey"
+
+
+def test_transclude_lastfm_keyword() -> None:
+    """LastFM should replace @lastfm."""
+    music = LastFM()
+    music.artist = "Drake"
+
+    result = music.transclude("Listening to @lastfm")
+
+    assert result == "Listening to Drake"
+
+
+def test_transclude_lastfm_no_keyword() -> None:
+    """LastFM should leave as is."""
+    music = LastFM()
+    music.artist = "Drake"
+
+    result = music.transclude("Hello!")
+
+    assert result == "Hello!"
+    
