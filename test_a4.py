@@ -8,8 +8,7 @@ from WebAPI import WebAPI
 from unittest.mock import Mock
 from ui import UI
 import pytest
-import json
-import urllib.error
+"""Pytest unit tests for Assignment 4 modules."""
 
 """OpenWeather class tests."""
 
