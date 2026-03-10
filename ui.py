@@ -49,6 +49,32 @@ class UI:
                 return val
             print("Please enter a value (cannot be blank).")
 
+    def _transluce_message(self, message: str) -> str:
+        result = message
+
+        try:
+            if "@weather" in result:
+                open_weather = OpenWeather(
+                    self.weather_zipcode,
+                    self.weather_ccode,
+                )
+                open_weather.set_apikey(self.weather_apikey)
+                open_weather.load_data()
+                result = open_weather.transclude(result)
+        except Exception:
+            pass
+
+        try:
+            if "@lastfm" in result:
+                lastfm = LastFM()
+                lastfm.set_apikey(self.lastfm_apikey)
+                lastfm.load_data()
+                result = lastfm.transclude(result)
+        except Exception:
+            pass
+
+        return result
+
     def _edit_publish_settings_flow(self) -> bool:
         prof = self.current_profile
         path = self.current_path
